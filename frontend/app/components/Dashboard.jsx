@@ -1,0 +1,272 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { calculateTotalHours, calculateProgress } from "../utils/calculateHours";
+import Link from "next/link";
+
+export default function Dashboard({ applications, timeLogs, requiredHours = 600, userName = "" }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-pulse">
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+      </div>
+    );
+  }
+
+  const totalRenderedHours = calculateTotalHours(timeLogs);
+  const progress = calculateProgress(totalRenderedHours, requiredHours);
+  const applicationsCount = applications.length;
+  const interviewsCount = applications.filter(
+    (app) => app.status === "Interview"
+  ).length;
+  const acceptedCount = applications.filter(
+    (app) => app.status === "Accepted"
+  ).length;
+  const pendingCount = applications.filter(
+    (app) => app.status === "Pending"
+  ).length;
+
+  const statCards = [
+    {
+      label: "Required Hours",
+      value: requiredHours,
+      icon: "🎯",
+      color: "blue",
+      gradient: "from-blue-500 to-blue-600",
+      bgGradient: "from-blue-50 to-blue-100",
+      darkBg: "dark:from-blue-900/30 dark:to-blue-800/20",
+      border: "border-blue-200 dark:border-blue-800",
+      text: "text-blue-700 dark:text-blue-300",
+      valueText: "text-blue-900 dark:text-blue-100",
+    },
+    {
+      label: "Rendered Hours",
+      value: totalRenderedHours.toFixed(2),
+      icon: "✅",
+      color: "green",
+      gradient: "from-green-500 to-green-600",
+      bgGradient: "from-green-50 to-green-100",
+      darkBg: "dark:from-green-900/30 dark:to-green-800/20",
+      border: "border-green-200 dark:border-green-800",
+      text: "text-green-700 dark:text-green-300",
+      valueText: "text-green-900 dark:text-green-100",
+    },
+    {
+      label: "Applications",
+      value: applicationsCount,
+      icon: "📝",
+      color: "purple",
+      gradient: "from-purple-500 to-purple-600",
+      bgGradient: "from-purple-50 to-purple-100",
+      darkBg: "dark:from-purple-900/30 dark:to-purple-800/20",
+      border: "border-purple-200 dark:border-purple-800",
+      text: "text-purple-700 dark:text-purple-300",
+      valueText: "text-purple-900 dark:text-purple-100",
+    },
+    {
+      label: "Interviews",
+      value: interviewsCount,
+      icon: "💼",
+      color: "orange",
+      gradient: "from-orange-500 to-orange-600",
+      bgGradient: "from-orange-50 to-orange-100",
+      darkBg: "dark:from-orange-900/30 dark:to-orange-800/20",
+      border: "border-orange-200 dark:border-orange-800",
+      text: "text-orange-700 dark:text-orange-300",
+      valueText: "text-orange-900 dark:text-orange-100",
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statCards.map((stat, index) => (
+          <div
+            key={stat.label}
+            className={`bg-gradient-to-br ${stat.bgGradient} ${stat.darkBg} rounded-xl p-6 border ${stat.border} shadow-lg hover:shadow-2xl transition-all duration-500 ease-out hover:scale-[1.03] hover:-translate-y-1 animate-fade-in card-hover`}
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h3 className={`text-sm font-semibold ${stat.text} uppercase tracking-wide`}>
+                {stat.label}
+              </h3>
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${stat.gradient} flex items-center justify-center text-2xl shadow-lg transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-6`}>
+                {stat.icon}
+              </div>
+            </div>
+            <p className={`text-4xl font-bold ${stat.valueText} mb-1`}>
+              {stat.value}
+            </p>
+            {stat.label === "Rendered Hours" && (
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                {((totalRenderedHours / requiredHours) * 100).toFixed(1)}% of target
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Progress Section */}
+      <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+              {userName ? `${userName}'s OJT Progress` : "OJT Progress"}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Track your journey to completion
+            </p>
+          </div>
+          <div className="text-right">
+            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              {progress.toFixed(1)}%
+            </span>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Complete</p>
+          </div>
+        </div>
+        
+        <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-10 shadow-inner overflow-hidden">
+          <div
+            className={`absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-blue-400 to-green-500 rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-4 ${
+              progress > 0 ? "animate-scale-in" : ""
+            }`}
+            style={{ width: `${Math.min(progress, 100)}%` }}
+          >
+            {progress > 10 && (
+              <span className="text-sm font-bold text-white drop-shadow-lg">
+                {progress.toFixed(1)}%
+              </span>
+            )}
+          </div>
+        </div>
+        
+        <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="text-center flex-1">
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              {totalRenderedHours.toFixed(2)}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">Hours Completed</p>
+          </div>
+          <div className="w-px h-12 bg-gray-300 dark:bg-gray-600"></div>
+          <div className="text-center flex-1">
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              {requiredHours}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">Required Hours</p>
+          </div>
+          <div className="w-px h-12 bg-gray-300 dark:bg-gray-600"></div>
+          <div className="text-center flex-1">
+            <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+              {(requiredHours - totalRenderedHours).toFixed(2)}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">Remaining</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Application Status Summary */}
+      {applicationsCount > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+            Application Status
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-300">{pendingCount}</p>
+              <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">Pending</p>
+            </div>
+            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">{interviewsCount}</p>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">Interviews</p>
+            </div>
+            <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+              <p className="text-2xl font-bold text-green-700 dark:text-green-300">{acceptedCount}</p>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">Accepted</p>
+            </div>
+            <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+              <p className="text-2xl font-bold text-red-700 dark:text-red-300">
+                {applicationsCount - pendingCount - interviewsCount - acceptedCount}
+              </p>
+              <p className="text-xs text-red-600 dark:text-red-400 mt-1">Rejected</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Message */}
+      {acceptedCount > 0 && (
+        <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-6 text-white shadow-xl animate-fade-in">
+          <div className="flex items-center gap-4">
+            <div className="text-5xl">🎉</div>
+            <div>
+              <h4 className="text-xl font-bold mb-1">Congratulations!</h4>
+              <p className="text-green-50">
+                You have {acceptedCount} accepted {acceptedCount === 1 ? "application" : "applications"}! 
+                Keep up the great work! 🚀
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link
+          href="/applications"
+          className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-2xl transition-all duration-500 ease-out hover:scale-[1.03] hover:-translate-y-2 hover:border-blue-400 dark:hover:border-blue-600 card-hover"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out">
+                  📝
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Applications
+                </h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                {applicationsCount} {applicationsCount === 1 ? "application" : "applications"} tracked
+              </p>
+            </div>
+            <div className="text-3xl text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-500 ease-out group-hover:translate-x-2 group-hover:scale-110">
+              →
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          href="/logs"
+          className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-2xl transition-all duration-500 ease-out hover:scale-[1.03] hover:-translate-y-2 hover:border-green-400 dark:hover:border-green-600 card-hover"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out">
+                  ⏰
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Time Logs
+                </h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                {timeLogs.length} {timeLogs.length === 1 ? "log" : "logs"} recorded
+              </p>
+            </div>
+            <div className="text-3xl text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-all duration-500 ease-out group-hover:translate-x-2 group-hover:scale-110">
+              →
+            </div>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
+}
