@@ -123,24 +123,24 @@ export default function DataManagement() {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
           📊 Data Management
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">
           Export your data to Excel/CSV or JSON format, or import from a backup file.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <button
             onClick={() => setIsExportModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500 ease-out font-semibold shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover flex items-center justify-center gap-2"
+            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500 ease-out font-semibold shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             <span>📥</span> Export Data
           </button>
           <button
             onClick={() => setIsImportModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-500 ease-out font-semibold shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover flex items-center justify-center gap-2"
+            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-500 ease-out font-semibold shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             <span>📤</span> Import Data
           </button>

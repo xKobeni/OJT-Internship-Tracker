@@ -36,16 +36,16 @@ export default function ApplicationsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8 animate-fade-in">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-3xl shadow-lg">
+        <header className="mb-6 sm:mb-8 animate-fade-in">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl sm:text-3xl shadow-lg">
               📝
             </div>
             <div>
-              <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-1 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-1 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Internship Applications
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400">
                 Track and manage all your internship applications in one place
               </p>
             </div>

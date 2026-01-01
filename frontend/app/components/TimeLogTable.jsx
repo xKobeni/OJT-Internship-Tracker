@@ -151,21 +151,21 @@ export default function TimeLogTable({ timeLogs, onEdit, onDelete }) {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
               OJT Daily Logs
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {filteredTimeLogs.length} of {timeLogs.length} {timeLogs.length === 1 ? "log" : "logs"}
             </p>
           </div>
           <button
             onClick={handleAdd}
-            className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-500 ease-out font-semibold flex items-center gap-2 shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-500 ease-out font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 btn-hover text-sm sm:text-base"
           >
-            <span className="text-xl font-bold">+</span> Add Time Log
+            <span className="text-lg sm:text-xl font-bold">+</span> Add Time Log
           </button>
         </div>
 

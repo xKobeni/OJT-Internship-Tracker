@@ -102,10 +102,10 @@ export default function Modal({ isOpen, onClose, title, children, size = "md", h
       />
 
       {/* Modal panel container */}
-      <div className="relative z-10 flex min-h-full items-center justify-center p-4 sm:p-6">
+      <div className="relative z-10 flex min-h-full items-center justify-center p-2 sm:p-4 md:p-6">
         <div
           ref={modalRef}
-          className={`relative w-full transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all duration-300 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ${
+          className={`relative w-full mx-2 sm:mx-4 transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all duration-300 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ${
             isAnimating
               ? "scale-100 opacity-100 translate-y-0"
               : "scale-95 opacity-0 translate-y-4"
@@ -113,10 +113,10 @@ export default function Modal({ isOpen, onClose, title, children, size = "md", h
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header with gradient */}
-          <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex items-center justify-between">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex items-center justify-between">
             <h3
               id="modal-title"
-              className="text-2xl font-bold text-gray-900 dark:text-white"
+              className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white pr-2"
             >
               {title}
             </h3>
@@ -143,7 +143,7 @@ export default function Modal({ isOpen, onClose, title, children, size = "md", h
           </div>
 
           {/* Content with better spacing */}
-          <div className="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+          <div className="px-4 sm:px-6 py-4 sm:py-6 max-h-[calc(100vh-120px)] sm:max-h-[calc(100vh-200px)] overflow-y-auto">
             {children}
           </div>
         </div>

@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: "📊" },
@@ -19,13 +21,17 @@ export default function Navigation() {
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2"
+              className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <span className="text-3xl">🎯</span>
-              <span>OJT Tracker</span>
+              <span className="text-2xl sm:text-3xl">🎯</span>
+              <span className="hidden sm:inline">OJT Tracker</span>
+              <span className="sm:hidden">OJT</span>
             </Link>
           </div>
-          <div className="flex space-x-2">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -47,7 +53,49 @@ export default function Navigation() {
               );
             })}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <span className="text-2xl">✕</span>
+            ) : (
+              <span className="text-2xl">☰</span>
+            )}
+          </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4 animate-fade-in">
+            <div className="flex flex-col space-y-2">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`relative px-4 py-3 rounded-lg text-base font-semibold transition-all duration-500 ease-out ${
+                      isActive
+                        ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                  >
+                    <span className="mr-3 text-lg">{item.icon}</span>
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute right-4 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-white rounded-full"></span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

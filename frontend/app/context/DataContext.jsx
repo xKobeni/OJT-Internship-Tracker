@@ -7,6 +7,7 @@ const DataContext = createContext();
 export function DataProvider({ children }) {
   const [applications, setApplications] = useState([]);
   const [timeLogs, setTimeLogs] = useState([]);
+  const [requiredHours, setRequiredHours] = useState(600);
   const [mounted, setMounted] = useState(false);
 
   // Load data from localStorage on mount
@@ -14,6 +15,7 @@ export function DataProvider({ children }) {
     setMounted(true);
     const savedApplications = localStorage.getItem("ojt-applications");
     const savedTimeLogs = localStorage.getItem("ojt-timeLogs");
+    const savedRequiredHours = localStorage.getItem("ojt-requiredHours");
 
     if (savedApplications) {
       try {
@@ -28,6 +30,17 @@ export function DataProvider({ children }) {
         setTimeLogs(JSON.parse(savedTimeLogs));
       } catch (error) {
         console.error("Error loading time logs:", error);
+      }
+    }
+
+    if (savedRequiredHours) {
+      try {
+        const hours = parseInt(savedRequiredHours, 10);
+        if (!isNaN(hours) && hours > 0) {
+          setRequiredHours(hours);
+        }
+      } catch (error) {
+        console.error("Error loading required hours:", error);
       }
     }
   }, []);
@@ -45,6 +58,13 @@ export function DataProvider({ children }) {
       localStorage.setItem("ojt-timeLogs", JSON.stringify(timeLogs));
     }
   }, [timeLogs, mounted]);
+
+  // Save required hours to localStorage whenever they change
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("ojt-requiredHours", requiredHours.toString());
+    }
+  }, [requiredHours, mounted]);
 
   const addApplication = (application) => {
     setApplications((prev) => [...prev, application]);
@@ -76,11 +96,19 @@ export function DataProvider({ children }) {
     setTimeLogs((prev) => prev.filter((log) => log.id !== id));
   };
 
+  const updateRequiredHours = (hours) => {
+    const parsedHours = parseInt(hours, 10);
+    if (!isNaN(parsedHours) && parsedHours > 0) {
+      setRequiredHours(parsedHours);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
         applications,
         timeLogs,
+        requiredHours,
         mounted,
         addApplication,
         editApplication,
@@ -88,6 +116,7 @@ export function DataProvider({ children }) {
         addTimeLog,
         editTimeLog,
         deleteTimeLog,
+        updateRequiredHours,
       }}
     >
       {children}
